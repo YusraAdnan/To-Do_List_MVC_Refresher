@@ -1,0 +1,34 @@
+﻿@model List<TaskItem>
+
+<h2>My Task List</h2>
+
+<!--We use <form> when we want to add, submit, post etc. If you want to show data only we dont use <form> if you want user input you use form-->
+<form asp-action="AddTask" method="post" class="d-flex">
+    <input type="text" name="title" class="form-control me-2" placeholder="Enter a new task..." />
+    <button type="submit" class="btn btn-success"><i class="bi bi-clipboard-plus-fill"></i></button>
+</form>
+
+<div class="card p-2 mt-3">
+    <ol class="list-group list-group-numbered mt-3">
+        @foreach (var task in Model)
+        {
+            <li class="list-group-item">
+                
+                @task.Title
+
+                <div class="mt-2">
+                @if (!task.IsComplete)
+                {
+                    <span class="btn btn-outline-secondary">[Mark Complete]</span>
+                }
+                else
+                {
+                    <span style="color:forestgreen">(Done)</span>
+                }
+                </div>
+
+            </li>
+        }
+    </ol>
+</div>
+
