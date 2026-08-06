@@ -20,6 +20,11 @@ namespace To_Do_List_MVC_Refresher.Controllers
         {
             return View(tasks);
         }
+        /* A request is a message your browser sends to the server, asking it to do something
+         * — either "show me this page" (GET) or "here's some data, do something with it" 
+         * (POST). Every click, form submission, or typed URL sends one behind the scenes; 
+         * the server receives it, does whatever it says, and sends a response back.*/
+
 
         /* Action methods allow us to return different results (return Views, Redirect, etc.), adding flexibility to controller methods.
         Represents what the controller sends back to the browser */
@@ -62,6 +67,13 @@ namespace To_Do_List_MVC_Refresher.Controllers
             return RedirectToAction("ToDoListHomePage");
         }
 
+        /*
+         "A POST request is safer because it can only be triggered by a genuine form submission. 
+        A GET request, on the other hand, can be triggered just by visiting a 
+        URL — manually typed, clicked, or even accessed automatically by something like a crawler. 
+        Since deleting data requires real intent, using GET for a delete action risks it 
+        being triggered accidentally, with no real intent behind it. Using POST ensures it 
+        can only happen through a deliberate form submission."*/
         // Delete task
         [HttpPost]
         public IActionResult DeleteTask(Guid id)
