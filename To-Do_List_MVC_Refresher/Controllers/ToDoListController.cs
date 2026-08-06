@@ -15,14 +15,22 @@ namespace To_Do_List_MVC_Refresher.Controllers
             new TaskItem { Id = Guid.NewGuid(), Title = "Finish assignment", IsComplete = false }
         };
 
-        // Shows all the tasks
-        public IActionResult ToDoListHomePage()
+        /* Has no attribute (default accepting GET requests) (viewing a list is just show me a page) */
+        public IActionResult ToDoListHomePage() 
         {
             return View(tasks);
         }
 
-        /*Action methods allow us to return different results (return Views, Redirect, etc.), adding flexibility to controller methods.
+        /* Action methods allow us to return different results (return Views, Redirect, etc.), adding flexibility to controller methods.
         Represents what the controller sends back to the browser */
+
+        /* Without [HttpPost]: the action accepts requests two ways 
+         * — someone clicking a link, or someone visiting a URL directly. 
+         * Anyone can trigger it just by typing the URL into a browser, no form, no button, no real intent needed.
+
+         With [HttpPost]: the action only runs if the request came in as a POST 
+        — meaning it had to come from an actual form submission. 
+        Just visiting the URL directly gets rejected (a 405 error) — it won't run at all.*/
         [HttpPost]
         public IActionResult AddTask(string title)
         {
@@ -36,7 +44,11 @@ namespace To_Do_List_MVC_Refresher.Controllers
             }
 
             //reloads the task list now including the new task - we use redirect to action when we don't want a new view to open
-            return RedirectToAction("ToDoListHomePage");
+
+             return RedirectToAction("ToDoListHomePage");
+            ////return View("ToDoListHomePage", tasks); /* if a POST request directly renders a View (instead of redirecting), 
+            //                                         * hitting refresh re-sends that same POST, silently adding the exact
+            //                                         * same task again.*/
         }
 
         // Toggle complete
@@ -51,6 +63,7 @@ namespace To_Do_List_MVC_Refresher.Controllers
         }
 
         // Delete task
+        [HttpPost]
         public IActionResult DeleteTask(Guid id)
         {
             var task = tasks.FirstOrDefault(t => t.Id == id);

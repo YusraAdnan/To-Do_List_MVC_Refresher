@@ -4,8 +4,10 @@
 
 <!--We use <form> when we want to add, submit, post etc. If you want to show data only we dont use <form> if you want user input you use form-->
 <form asp-action="AddTask" method="post" class="d-flex">
+
     <input type="text" name="title" class="form-control me-2" placeholder="Enter a new task..." />
     <button type="submit" class="btn btn-success"><i class="bi bi-clipboard-plus-fill"></i></button>
+
 </form>
 
 <div class="card p-2 mt-3">
@@ -25,6 +27,9 @@
                 {
                     <span style="color:forestgreen">(Done)</span>
                 }
+                    <form asp-action="DeleteTask" asp-route-id="@task.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
+                    </form>
                 </div>
 
             </li>
