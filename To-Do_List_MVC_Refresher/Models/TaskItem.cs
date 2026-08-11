@@ -7,5 +7,6 @@
         public string Title { get; set; } = null!;
 
         public bool IsComplete { get; set; }
+
     }
 }

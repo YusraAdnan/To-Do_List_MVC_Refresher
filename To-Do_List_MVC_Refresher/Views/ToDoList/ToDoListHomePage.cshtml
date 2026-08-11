@@ -23,13 +23,15 @@
                 <div class="mt-2">
                 @if (!task.IsComplete)
                 {
-                    <span class="btn btn-outline-secondary">[Mark Complete]</span>
+                    <form asp-action="ToggleComplete" asp-route-id="@task.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-secondary">[Mark Complete]</button>
+                    </form>
                 }
                 else
                 {
                     <span style="color:forestgreen">(Done)</span>
                 }
-                    <form asp-action="DeleteTask" asp-route-id="@task.Id" method="post" class="d-inline">
+                    <form asp-action="DeleteTask" asp-route-task_id="@task.Id" method="post" class="d-inline">
                         <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
                     </form>
                 </div>

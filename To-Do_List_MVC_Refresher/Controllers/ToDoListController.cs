@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using To_Do_List_MVC_Refresher.Models;
 
@@ -6,7 +7,12 @@ namespace To_Do_List_MVC_Refresher.Controllers
 {
     public class ToDoListController : Controller
     {
+        private readonly ToDoDbContext _dbContext;
 
+        public ToDoListController(ToDoDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         // Static list = temporary in-memory storage, standing in for a database.
         // Resets every time the app restarts - a real database replaces this in Stage 2.
         private static List<TaskItem> tasks = new List<TaskItem>
@@ -16,8 +22,10 @@ namespace To_Do_List_MVC_Refresher.Controllers
         };
 
         /* Has no attribute (default accepting GET requests) (viewing a list is just show me a page) */
-        public IActionResult ToDoListHomePage() 
+        public IActionResult ToDoListHomePage()
         {
+            var tasks = _dbContext.TaskItems.ToList();
+
             return View(tasks);
         }
         /* A request is a message your browser sends to the server, asking it to do something
@@ -42,6 +50,8 @@ namespace To_Do_List_MVC_Refresher.Controllers
             var task = new TaskItem { Id = Guid.NewGuid(), Title = title, IsComplete = false };
             tasks.Add(task);
 
+            _dbContext.TaskItems.Add(task);
+            _dbContext.SaveChanges();
             if (TempData != null)
             {
                 //TempData is a way of storing data for one request/redirect
@@ -59,10 +69,12 @@ namespace To_Do_List_MVC_Refresher.Controllers
         // Toggle complete
         public IActionResult ToggleComplete(Guid id)
         {
-            var task = tasks.FirstOrDefault(t => t.Id == id);
+            //var task = tasks.FirstOrDefault(t => t.Id == id);
+            var task = _dbContext.TaskItems.FirstOrDefault(t => t.Id == id);
             if (task != null)
             {
                 task.IsComplete = true;
+                _dbContext.SaveChanges();
             }
             return RedirectToAction("ToDoListHomePage");
         }
@@ -76,17 +88,17 @@ namespace To_Do_List_MVC_Refresher.Controllers
         can only happen through a deliberate form submission."*/
         // Delete task
         [HttpPost]
-        public IActionResult DeleteTask(Guid id)
+        public IActionResult DeleteTask(Guid task_id)
         {
-            var task = tasks.FirstOrDefault(t => t.Id == id);
+            // var task = tasks.FirstOrDefault(t => t.Id == task_id);
+            var task = _dbContext.TaskItems.FirstOrDefault(t => t.Id == task_id);
+
             if (task != null)
             {
-                tasks.Remove(task);
+                //tasks.Remove(task);
+                _dbContext.TaskItems.Remove(task);
+                _dbContext.SaveChanges();
 
-                if (TempData != null)
-                {
-                    TempData["Success"] = "Task deleted successfully!";
-                }
             }
             return RedirectToAction("ToDoListHomePage");
         }

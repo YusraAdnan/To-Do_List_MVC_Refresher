@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using To_Do_List_MVC_Refresher.Models;
+
 namespace To_Do_List_MVC_Refresher
 {
     public class Program
@@ -9,6 +12,8 @@ namespace To_Do_List_MVC_Refresher
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddDbContext<ToDoDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
