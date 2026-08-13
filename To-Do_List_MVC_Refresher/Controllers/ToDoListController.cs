@@ -25,7 +25,7 @@ namespace To_Do_List_MVC_Refresher.Controllers
         public IActionResult ToDoListHomePage()
         {
             var tasks = _dbContext.TaskItems.ToList();
-
+            
             ViewBag.PendingCount = tasks.Count(t => !t.IsComplete);
 
             return View(tasks);
