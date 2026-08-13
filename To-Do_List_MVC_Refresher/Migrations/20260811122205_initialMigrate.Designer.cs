@@ -12,8 +12,8 @@ using To_Do_List_MVC_Refresher.Models;
 namespace To_Do_List_MVC_Refresher.Migrations
 {
     [DbContext(typeof(ToDoDbContext))]
-    [Migration("20260811075032_RemoveDueDate")]
-    partial class RemoveDueDate
+    [Migration("20260811122205_initialMigrate")]
+    partial class initialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

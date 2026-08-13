@@ -12,8 +12,8 @@ using To_Do_List_MVC_Refresher.Models;
 namespace To_Do_List_MVC_Refresher.Migrations
 {
     [DbContext(typeof(ToDoDbContext))]
-    [Migration("20260811074934_AddDueDate")]
-    partial class AddDueDate
+    [Migration("20260811123708_migration_2")]
+    partial class migration_2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,9 +30,6 @@ namespace To_Do_List_MVC_Refresher.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DueDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsComplete")
                         .HasColumnType("bit");

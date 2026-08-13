@@ -26,6 +26,8 @@ namespace To_Do_List_MVC_Refresher.Controllers
         {
             var tasks = _dbContext.TaskItems.ToList();
 
+            ViewBag.PendingCount = tasks.Count(t => !t.IsComplete);
+
             return View(tasks);
         }
         /* A request is a message your browser sends to the server, asking it to do something
@@ -44,23 +46,33 @@ namespace To_Do_List_MVC_Refresher.Controllers
          With [HttpPost]: the action only runs if the request came in as a POST 
         — meaning it had to come from an actual form submission. 
         Just visiting the URL directly gets rejected (a 405 error) — it won't run at all.*/
+
+
+
+        /*
+         Does it cross a redirect? → TempData. 
+         If Same request, but depends on data/logic the View can't compute? - ViewData/ViewBag. 
+         Always exactly the same text? - skip all three, hardcode it.
+         */
         [HttpPost]
         public IActionResult AddTask(string title)
         {
             var task = new TaskItem { Id = Guid.NewGuid(), Title = title, IsComplete = false };
-            tasks.Add(task);
+            //tasks.Add(task);
 
             _dbContext.TaskItems.Add(task);
             _dbContext.SaveChanges();
+
             if (TempData != null)
             {
-                //TempData is a way of storing data for one request/redirect
                 TempData["Success"] = "Task added successfully!";
             }
 
             //reloads the task list now including the new task - we use redirect to action when we don't want a new view to open
 
-             return RedirectToAction("ToDoListHomePage");
+            return RedirectToAction("ToDoListHomePage");
+
+
             ////return View("ToDoListHomePage", tasks); /* if a POST request directly renders a View (instead of redirecting), 
             //                                         * hitting refresh re-sends that same POST, silently adding the exact
             //                                         * same task again.*/
@@ -79,26 +91,19 @@ namespace To_Do_List_MVC_Refresher.Controllers
             return RedirectToAction("ToDoListHomePage");
         }
 
-        /*
-         "A POST request is safer because it can only be triggered by a genuine form submission. 
-        A GET request, on the other hand, can be triggered just by visiting a 
-        URL — manually typed, clicked, or even accessed automatically by something like a crawler. 
-        Since deleting data requires real intent, using GET for a delete action risks it 
-        being triggered accidentally, with no real intent behind it. Using POST ensures it 
-        can only happen through a deliberate form submission."*/
+       
         // Delete task
         [HttpPost]
         public IActionResult DeleteTask(Guid task_id)
         {
             // var task = tasks.FirstOrDefault(t => t.Id == task_id);
             var task = _dbContext.TaskItems.FirstOrDefault(t => t.Id == task_id);
-
             if (task != null)
             {
-                //tasks.Remove(task);
                 _dbContext.TaskItems.Remove(task);
                 _dbContext.SaveChanges();
 
+                TempData["DeleteSuccess"] = "Task deleted successfully!";
             }
             return RedirectToAction("ToDoListHomePage");
         }
