@@ -9,9 +9,10 @@ namespace To_Do_List_MVC_Refresher.Controllers
     {
         private readonly ToDoDbContext _dbContext;
 
+        //Constructor of the controller class
         public ToDoListController(ToDoDbContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext; //
         }
         // Static list = temporary in-memory storage, standing in for a database.
         // Resets every time the app restarts - a real database replaces this in Stage 2.
@@ -30,23 +31,6 @@ namespace To_Do_List_MVC_Refresher.Controllers
 
             return View(tasks);
         }
-        /* A request is a message your browser sends to the server, asking it to do something
-         * — either "show me this page" (GET) or "here's some data, do something with it" 
-         * (POST). Every click, form submission, or typed URL sends one behind the scenes; 
-         * the server receives it, does whatever it says, and sends a response back.*/
-
-
-        /* Action methods allow us to return different results (return Views, Redirect, etc.), adding flexibility to controller methods.
-        Represents what the controller sends back to the browser */
-
-        /* Without [HttpPost]: the action accepts requests two ways 
-         * — someone clicking a link, or someone visiting a URL directly. 
-         * Anyone can trigger it just by typing the URL into a browser, no form, no button, no real intent needed.
-
-         With [HttpPost]: the action only runs if the request came in as a POST 
-        — meaning it had to come from an actual form submission. 
-        Just visiting the URL directly gets rejected (a 405 error) — it won't run at all.*/
-
 
 
         /*

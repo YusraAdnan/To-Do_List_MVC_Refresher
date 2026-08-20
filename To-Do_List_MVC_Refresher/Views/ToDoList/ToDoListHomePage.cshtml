@@ -6,7 +6,7 @@
     (do something other than looking). 
     If you want to show data only we don't use <form> -->
 
-@if (ViewData["Success"] != null)
+@if (TempData["Success"] != null)
 {
     <div class="alert alert-success">@TempData["Success"]</div>
 }
